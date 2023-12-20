@@ -20,15 +20,17 @@ test('user form shows two inputs and a button', () => {
 test('it calls onUserAdd when the form is submitted', () => {
     //not the best implementation
     //the below three lines is an example of a mock function as it records 
-    const argList = [];
-    const callback = (...args) => {
-        argList.push(args);
-    }
+    const mock = jest.fn()
     //step1- try to render my component
-    render(<UserForm onUserAdd={callback} />)
+    render(<UserForm onUserAdd={mock} />)
     
     //step 2- find the 2 inputs
-    const [nameInput, emailInput] = screen.getAllByRole('textbox')
+    const nameInput = screen.getByRole('textbox', {
+        name : /name/i ,// /i ensures that the upper or lower case is irrelevant
+    });
+    const emailInput = screen.getByRole('textbox', {
+        name : /email/i // /i ensures that the upper or lower case is irrelevant
+    });
 
     //step 3 - simulate typing in a name 
      user.click(nameInput);
@@ -45,8 +47,8 @@ test('it calls onUserAdd when the form is submitted', () => {
     user.click(button);
 
     //step 7 - Assertion to make sure 'onUserAdd' gets called with email/name
-    expect(argList).toHaveLength(1);
-    expect(argList[0][0]).toEqual({name:'jane', email:'jane@jane.com'})
+    expect(mock).toHaveBeenCalled();
+    expect(mock).toHaveBeenCalledWith({name:'jane',email:'jane@jane.com'});
 
 
 });

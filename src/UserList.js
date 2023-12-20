@@ -19,7 +19,7 @@ function UserList({users}){
                 </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody data-testid="users">
            {renderedUsers} 
         </tbody>
     </table>
